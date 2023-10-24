@@ -38,19 +38,16 @@ WrappedNamecoin is an ERC-20 Token that wraps Namecoin.
 <tr>
 <th>Network</th>
 <th>Official Release</th>
-<th>Beta Release</th>
 </tr>
 <tr>
 <td>Ethereum</td>
 <td>Not Deployed</td>
-<td>-</td>
 </tr>
 <tr>
 <td>Sepolia</td>
-<td>-</td>
 <td>
   
-  [](https://sepolia.etherscan.io/address/)
+  [0xA50a0B38944Db3dBd7182C3757E8cc13C5Ee1343](https://sepolia.etherscan.io/address/0xA50a0B38944Db3dBd7182C3757E8cc13C5Ee1343)
   
 </td>
 </tr>
