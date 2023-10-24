@@ -21,9 +21,14 @@ contract WrappedNamecoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgrad
         _disableInitializers();
     }
 
-    function initialize(address defaultAdmin, address pauser, address minter, address upgrader)
+    function initialize()
         initializer public
     {
+        address defaultAdmin =  msg.sender;
+        address pauser = msg.sender;
+        address minter = msg.sender;
+        address upgrader = msg.sender;
+        
         __ERC20_init("WrappedNamecoin", "WNMC");
         __ERC20Burnable_init();
         __ERC20Pausable_init();
