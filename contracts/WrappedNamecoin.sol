@@ -11,26 +11,37 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @custom:security-contact contact@wnamecoin.com
-contract WrappedNamecoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20PausableUpgradeable, AccessControlUpgradeable, ERC20PermitUpgradeable, ERC20FlashMintUpgradeable, UUPSUpgradeable {
+contract WrappedNamecoin is
+    Initializable,
+    ERC20Upgradeable,
+    ERC20BurnableUpgradeable,
+    ERC20PausableUpgradeable,
+    AccessControlUpgradeable,
+    ERC20PermitUpgradeable,
+    ERC20FlashMintUpgradeable,
+    UUPSUpgradeable
+{
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
-    
-    event WithdrawalToAddress(address indexed from, uint256 value, string withdrawalAddress);
+
+    event WithdrawalToAddress(
+        address indexed from,
+        uint256 value,
+        string withdrawalAddress
+    );
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize()
-        initializer public
-    {
-        address defaultAdmin =  msg.sender;
+    function initialize() public initializer {
+        address defaultAdmin = msg.sender;
         address pauser = msg.sender;
         address minter = msg.sender;
         address upgrader = msg.sender;
-        
+
         __ERC20_init("WrappedNamecoin", "WNMC");
         __ERC20Burnable_init();
         __ERC20Pausable_init();
@@ -58,23 +69,22 @@ contract WrappedNamecoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgrad
     }
 
     function burn(uint256 amount, string memory withdrawalAddress) public {
-        _burn(msg.sender, amount); 
-        
+        _burn(msg.sender, amount);
+
         emit WithdrawalToAddress(msg.sender, amount, withdrawalAddress);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        onlyRole(UPGRADER_ROLE)
-        override
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(UPGRADER_ROLE) {}
 
     // The following functions are overrides required by Solidity.
 
-    function _update(address from, address to, uint256 value)
-        internal
-        override(ERC20Upgradeable, ERC20PausableUpgradeable)
-    {
+    function _update(
+        address from,
+        address to,
+        uint256 value
+    ) internal override(ERC20Upgradeable, ERC20PausableUpgradeable) {
         super._update(from, to, value);
     }
 }

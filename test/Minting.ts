@@ -2,70 +2,87 @@ import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
 
 describe("Minting", function () {
-    it("Should deploy the contract", async function () {
-        const WNMC = await ethers.getContractFactory("WrappedNamecoin");
-            
-        const wnmcDeploy = await upgrades.deployProxy(WNMC, { kind: "uups" , initializer: "initialize"});
-        await wnmcDeploy.waitForDeployment();
+  it("Should deploy the contract", async function () {
+    const WNMC = await ethers.getContractFactory("WrappedNamecoin");
+
+    const wnmcDeploy = await upgrades.deployProxy(WNMC, {
+      kind: "uups",
+      initializer: "initialize",
     });
+    await wnmcDeploy.waitForDeployment();
+  });
 
-    it("Mint Tokens", async function () {
-        const WNMC = await ethers.getContractFactory("WrappedNamecoin");
+  it("Mint Tokens", async function () {
+    const WNMC = await ethers.getContractFactory("WrappedNamecoin");
 
-        const wnmcDeploy = await upgrades.deployProxy(WNMC, { kind: "uups" , initializer: "initialize"});
-        await wnmcDeploy.waitForDeployment();
-
-        const [owner, addr1] = await ethers.getSigners()
-
-        await wnmcDeploy.mint(addr1.address, 1000);
-        expect(await wnmcDeploy.balanceOf(addr1.address)).to.equal(1000);
-        expect(await wnmcDeploy.totalSupply()).to.equal(1000);
+    const wnmcDeploy = await upgrades.deployProxy(WNMC, {
+      kind: "uups",
+      initializer: "initialize",
     });
+    await wnmcDeploy.waitForDeployment();
 
-    it("Mint Tokens multiple times", async function () {
-        const WNMC = await ethers.getContractFactory("WrappedNamecoin");
+    const [addr1] = await ethers.getSigners();
 
-        const wnmcDeploy = await upgrades.deployProxy(WNMC, { kind: "uups" , initializer: "initialize"});
-        await wnmcDeploy.waitForDeployment();
+    await wnmcDeploy.mint(addr1.address, 1000);
+    expect(await wnmcDeploy.balanceOf(addr1.address)).to.equal(1000);
+    expect(await wnmcDeploy.totalSupply()).to.equal(1000);
+  });
 
-        const [owner, addr1] = await ethers.getSigners()
+  it("Mint Tokens multiple times", async function () {
+    const WNMC = await ethers.getContractFactory("WrappedNamecoin");
 
-        await wnmcDeploy.mint(addr1.address, 1000);
-        await wnmcDeploy.mint(addr1.address, 1000);
-        await wnmcDeploy.mint(addr1.address, 1000);
-
-        expect(await wnmcDeploy.balanceOf(addr1.address)).to.equal(3000);
-        expect(await wnmcDeploy.totalSupply()).to.equal(3000);
+    const wnmcDeploy = await upgrades.deployProxy(WNMC, {
+      kind: "uups",
+      initializer: "initialize",
     });
+    await wnmcDeploy.waitForDeployment();
 
-    it("Mint Token by non-owner", async function () {
-        const WNMC = await ethers.getContractFactory("WrappedNamecoin");
+    const [addr1] = await ethers.getSigners();
 
-        const wnmcDeploy = await upgrades.deployProxy(WNMC, { kind: "uups" , initializer: "initialize"});
-        await wnmcDeploy.waitForDeployment();
+    await wnmcDeploy.mint(addr1.address, 1000);
+    await wnmcDeploy.mint(addr1.address, 1000);
+    await wnmcDeploy.mint(addr1.address, 1000);
 
-        const [owner, addr1, addr2] = await ethers.getSigners()
+    expect(await wnmcDeploy.balanceOf(addr1.address)).to.equal(3000);
+    expect(await wnmcDeploy.totalSupply()).to.equal(3000);
+  });
 
-        const wnmcDeployAsAddr1 = wnmcDeploy.connect(addr1);
+  it("Mint Token by non-owner", async function () {
+    const WNMC = await ethers.getContractFactory("WrappedNamecoin");
 
-        // revert with Custom Error Message AccessControlUnauthorizedAccount
-        expect(wnmcDeployAsAddr1.mint(addr2.address, 1000)).to.be.revertedWith("AccessControlUnauthorizedAccount");
+    const wnmcDeploy = await upgrades.deployProxy(WNMC, {
+      kind: "uups",
+      initializer: "initialize",
     });
-    
-    it("Assign Minter Role", async function () {
-        const WNMC = await ethers.getContractFactory("WrappedNamecoin");
+    await wnmcDeploy.waitForDeployment();
 
-        const wnmcDeploy = await upgrades.deployProxy(WNMC, { kind: "uups" , initializer: "initialize"});
-        await wnmcDeploy.waitForDeployment();
+    const [addr1, addr2] = await ethers.getSigners();
 
-        const [owner, addr1, addr2] = await ethers.getSigners()
+    const wnmcDeployAsAddr1 = wnmcDeploy.connect(addr1);
 
-        await wnmcDeploy.grantRole(await wnmcDeploy.MINTER_ROLE(), addr1.address);
+    // revert with Custom Error Message AccessControlUnauthorizedAccount
+    expect(wnmcDeployAsAddr1.mint(addr2.address, 1000)).to.be.revertedWith(
+      "AccessControlUnauthorizedAccount"
+    );
+  });
 
-        const wnmcDeployAsAddr1 = wnmcDeploy.connect(addr1);
+  it("Assign Minter Role", async function () {
+    const WNMC = await ethers.getContractFactory("WrappedNamecoin");
 
-        await wnmcDeployAsAddr1.mint(addr2.address, 1000);
-
-        expect(await wnmcDeploy.balanceOf(addr2.address)).to.equal(1000);
+    const wnmcDeploy = await upgrades.deployProxy(WNMC, {
+      kind: "uups",
+      initializer: "initialize",
     });
+    await wnmcDeploy.waitForDeployment();
+
+    const [addr1, addr2] = await ethers.getSigners();
+
+    await wnmcDeploy.grantRole(await wnmcDeploy.MINTER_ROLE(), addr1.address);
+
+    const wnmcDeployAsAddr1 = wnmcDeploy.connect(addr1);
+
+    await wnmcDeployAsAddr1.mint(addr2.address, 1000);
+
+    expect(await wnmcDeploy.balanceOf(addr2.address)).to.equal(1000);
+  });
 });
