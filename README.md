@@ -1,11 +1,5 @@
-![WrappedNamecoin](img/wnmc-banner.png)
-
-[![Version][version-badge]][version-link]
-[![Test CI][ci-badge]][ci-link]
-[![Code Coverage][coverage-badge]][coverage-link]
 [![License][license-badge]][license-link]
-[![Docs][docs-badge]][docs-link]
-[![Discussions][discussions-badge]][discussions-link]
+
 
 # Wrapped Namecoin
 
@@ -125,15 +119,5 @@ When making a pull request, ensure that:
 
 [MIT](LICENSE) Copyright 2023.
 
-[version-badge]: https://
-[version-link]: https://github.com/WrappedNamecoin/wnamecoin-v1/releases
-[ci-badge]: https://
-[ci-link]: https://
-[coverage-badge]: https://
-[coverage-link]: https://
 [license-badge]: https://img.shields.io/github/license/WrappedNamecoin/wnamecoin-v1
 [license-link]: https://github.com/WrappedNamecoin/wnamecoin-v1/blob/main/LICENSE
-[docs-badge]: https://
-[docs-link]: https://
-[discussions-badge]: https://
-[discussions-link]: https://
