@@ -2,7 +2,7 @@ import { ethers, run, upgrades } from "hardhat";
 // import openzeppelin functions
 
 async function main() {
-  const proxyAddress = "";
+  const proxyAddress = "0xA50a0B38944Db3dBd7182C3757E8cc13C5Ee1343";
 
   const WNMC = await ethers.getContractFactory("WrappedNamecoin");
 

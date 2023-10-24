@@ -15,6 +15,8 @@ contract WrappedNamecoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgrad
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+    
+    event WithdrawalToAddress(address indexed from, uint256 value, string withdrawalAddress);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -53,6 +55,12 @@ contract WrappedNamecoin is Initializable, ERC20Upgradeable, ERC20BurnableUpgrad
 
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
         _mint(to, amount);
+    }
+
+    function burn(uint256 amount, string memory withdrawalAddress) public {
+        _burn(msg.sender, amount); 
+        
+        emit WithdrawalToAddress(msg.sender, amount, withdrawalAddress);
     }
 
     function _authorizeUpgrade(address newImplementation)
