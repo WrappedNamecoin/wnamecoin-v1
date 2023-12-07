@@ -45,6 +45,14 @@ WrappedNamecoin is an ERC-20 Token that wraps Namecoin.
   
 </td>
 </tr>
+<tr>
+<td>Goerli</td>
+<td>
+  
+  [0x42086f8773d557097c4Dd6A7d0d7b2c828e5EA12](https://goerli.etherscan.io/address/0x42086f8773d557097c4dd6a7d0d7b2c828e5ea12)
+  
+</td>
+</tr>
 </table>
 
 ## Install
