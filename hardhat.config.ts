@@ -1,10 +1,10 @@
+import "@nomicfoundation/hardhat-ledger";
+import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-solhint";
+import "@openzeppelin/hardhat-upgrades";
 import dotenv from "dotenv";
 
 import type { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-ledger";
-import "@nomiclabs/hardhat-solhint";
-import "@openzeppelin/hardhat-upgrades";
 
 // Load .env file
 dotenv.config();
@@ -26,18 +26,12 @@ const config: HardhatUserConfig = {
   networks: {
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-      accounts: [
-        process.env.SEPOLIA_PRIVATE_KEY ??
-          "0000000000000000000000000000000000000000000000000000000000000000",
-      ],
+      accounts: [process.env.SEPOLIA_PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
       gasPrice: "auto",
     },
     goerli: {
       url: `https://eth-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-      accounts: [
-        process.env.GOERLI_PRIVATE_KEY ??
-          "0000000000000000000000000000000000000000000000000000000000000000",
-      ],
+      accounts: [process.env.GOERLI_PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
       gasPrice: "auto",
     },
     hardhat: {
