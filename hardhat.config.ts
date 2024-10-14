@@ -3,7 +3,6 @@ import "@nomicfoundation/hardhat-toolbox";
 import "@nomiclabs/hardhat-solhint";
 import "@openzeppelin/hardhat-upgrades";
 import dotenv from "dotenv";
-
 import type { HardhatUserConfig } from "hardhat/config";
 
 // Load .env file

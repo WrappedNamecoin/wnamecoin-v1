@@ -1,7 +1,9 @@
 import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tseslintParser from "@typescript-eslint/parser";
+import prettierConfig from "eslint-config-prettier";
 import eslintPluginImport from "eslint-plugin-import";
+import eslintPluginPrettier from "eslint-plugin-prettier";
 
 export default [
   js.configs.recommended,
@@ -22,6 +24,7 @@ export default [
     ],
     plugins: {
       "@typescript-eslint": tseslint,
+      prettier: eslintPluginPrettier,
       import: eslintPluginImport,
     },
     languageOptions: {
@@ -32,19 +35,11 @@ export default [
       },
     },
     rules: {
+      ...prettierConfig.rules,
+      "prettier/prettier": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       camelcase: ["error", {}],
-      "import/order": [
-        "error",
-        {
-          alphabetize: {
-            order: "asc",
-          },
-          groups: ["object", ["builtin", "external"], "parent", "sibling", "index", "type"],
-          "newlines-between": "always",
-        },
-      ],
       "object-shorthand": "error",
       "prefer-const": "error",
       "sort-imports": ["error", { ignoreDeclarationSort: true }],

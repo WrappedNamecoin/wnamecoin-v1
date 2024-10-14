@@ -61,9 +61,7 @@ describe("Minting", function () {
     const wnmcDeployAsAddr1 = wnmcDeploy.connect(addr1);
 
     // revert with Custom Error Message AccessControlUnauthorizedAccount
-    expect(wnmcDeployAsAddr1.mint(addr2.address, 1000)).to.be.revertedWith(
-      "AccessControlUnauthorizedAccount"
-    );
+    expect(wnmcDeployAsAddr1.mint(addr2.address, 1000)).to.be.revertedWith("AccessControlUnauthorizedAccount");
   });
 
   it("Assign Minter Role", async function () {
