@@ -6,7 +6,8 @@ async function main() {
   await wnmcDeploy.waitForDeployment(); // Wait for the deployment to be mined
 
   const address = await wnmcDeploy.getAddress();
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(address);
+  const implementationAddress =
+    await upgrades.erc1967.getImplementationAddress(address);
 
   // Display Proxy address
   console.log(`Proxy Contract deployed to ${address}`);

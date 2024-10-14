@@ -1,17 +1,45 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PermitUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20FlashMintUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+/* solhint-disable foundry-test-functions */
+
+import {
+    AccessControlUpgradeable
+} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import {
+    Initializable
+} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {
+    UUPSUpgradeable
+} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {
+    ERC20Upgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import {
+    ERC20BurnableUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import {
+    ERC20FlashMintUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20FlashMintUpgradeable.sol";
+import {
+    ERC20PausableUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
+import {
+    ERC20PermitUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PermitUpgradeable.sol";
+
+/// IWrappedNamecoin is the interface for the WrappedNamecoin contract.
+interface IWrappedNamecoin {
+    function initialize() external;
+    function pause() external;
+    function unpause() external;
+    function mint(address to, uint256 amount) external;
+    function burn(uint256 amount, string memory withdrawalAddress) external;
+}
 
 /// @custom:security-contact contact@wnamecoin.com
 contract WrappedNamecoin is
+    IWrappedNamecoin,
     Initializable,
     ERC20Upgradeable,
     ERC20BurnableUpgradeable,
@@ -25,14 +53,18 @@ contract WrappedNamecoin is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    event WithdrawalToAddress(address indexed from, uint256 value, string withdrawalAddress);
+    event WithdrawalToAddress(
+        address indexed from,
+        uint256 value,
+        string withdrawalAddress
+    );
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize() public override initializer {
         address defaultAdmin = msg.sender;
         address pauser = msg.sender;
         address minter = msg.sender;
@@ -52,25 +84,33 @@ contract WrappedNamecoin is
         _grantRole(UPGRADER_ROLE, upgrader);
     }
 
-    function pause() public onlyRole(PAUSER_ROLE) {
+    function pause() public override onlyRole(PAUSER_ROLE) {
         _pause();
     }
 
-    function unpause() public onlyRole(PAUSER_ROLE) {
+    function unpause() public override onlyRole(PAUSER_ROLE) {
         _unpause();
     }
 
-    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+    function mint(
+        address to,
+        uint256 amount
+    ) public override onlyRole(MINTER_ROLE) {
         _mint(to, amount);
     }
 
-    function burn(uint256 amount, string memory withdrawalAddress) public {
+    function burn(
+        uint256 amount,
+        string memory withdrawalAddress
+    ) public override {
         _burn(msg.sender, amount);
 
         emit WithdrawalToAddress(msg.sender, amount, withdrawalAddress);
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(UPGRADER_ROLE) {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(UPGRADER_ROLE) {}
 
     // The following functions are overrides required by Solidity.
 
