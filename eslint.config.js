@@ -2,7 +2,6 @@ import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tseslintParser from "@typescript-eslint/parser";
 import eslintPluginImport from "eslint-plugin-import";
-import eslintPluginPrettier from "eslint-plugin-prettier";
 
 export default [
   js.configs.recommended,
@@ -17,6 +16,9 @@ export default [
       "coverage/**",
       "typechain-types/**",
       "lib/**",
+      "config/.solcover-reference.js",
+      "config/.solcover.js",
+      "eslint.config.js",
     ],
     plugins: {
       "@typescript-eslint": tseslint,
@@ -52,6 +54,25 @@ export default [
     files: ["test/**/*.spec.ts"],
     rules: {
       "no-unused-expressions": "off",
+    },
+  },
+  {
+    files: ["hardhat.config.ts", "scripts/**/*.ts"],
+    languageOptions: {
+      globals: {
+        process: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+      },
+    },
+  },
+  {
+    files: ["test/**/*.ts"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+      },
     },
   },
 ];

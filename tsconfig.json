@@ -13,5 +13,13 @@
     "./test",
     "./*.config.ts"
   ],
-  "files": ["./hardhat.config.ts"]
+  "files": [
+    "./hardhat.config.ts"
+  ],
+  "ignores": [
+    ".prettierrc.js",
+    "config/.solcover-reference.js",
+    "config/.solcover.js",
+    "eslint.config.js",
+  ],
 }
